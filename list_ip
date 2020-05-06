@@ -1,0 +1,32 @@
+#Create txt file with cidr (eg. 192.168.1.0/24)
+$file = Get-Content <file>
+
+for ($i=0; $i -lt $file.length; $i++){
+	$mask_split = $file[$i].Split("/")
+	$ip = $mask_split[0]
+	$mask = $mask_split[1]
+	$ip_split = $ip.Split(".")
+	$w = $ip_split[0] -as [int]
+	$x = $ip_split[1] -as [int]
+	$y = $ip_split[2] -as [int]
+	$z = $ip_split[3] -as [int]
+	
+	for($count = [Math]::Pow(2, (32 - $mask)); $count -gt 0; $count--){
+    $w, $x, $y, $z -join '.' >>ip.txt
+      $z++
+      if ($z -gt 255) {
+      $y++
+      $z = 0
+      }
+      if ($y -gt 255) {
+      $x++
+          $y = 0
+      }
+      if ($x -gt 255) {
+      $w++
+          $x = 0
+      }
+  }
+
+}
+
